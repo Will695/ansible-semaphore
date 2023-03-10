@@ -1,6 +1,6 @@
 - hosts: testpi
   # gather_facts: False
-  become: true
+  become: yes
   # become_user: root
   roles:
   - deploy
