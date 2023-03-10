@@ -1,6 +1,7 @@
 ---
   - name: Nanotest
     hosts: all
+    gather_facts: no
     become: yes
     become_user: root
     tasks:
