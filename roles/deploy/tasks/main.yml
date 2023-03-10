@@ -1,6 +1,5 @@
 ---
   - name: Nanotest
-    hosts: testpi
     become: yes
     become_user: root
     tasks:
