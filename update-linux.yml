@@ -1,5 +1,4 @@
 ---
----
   - name: Nanotest
     hosts: all
     gather_facts: no
