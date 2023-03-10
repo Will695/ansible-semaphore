@@ -1,11 +1,12 @@
 ---
-- name: My playbook
-  hosts: testpi
-  become: yes
-  tasks:
-    - name: ensure nano is there
-      apt:
-        name: nano
-        state: absent
+  - name: Nanotest
+    hosts: testpi
+    become: yes
+    become_user: root
+    tasks:
+      - name: ensure nano is there
+        apt:
+          name: nano
+          state: absent
 # - name: Update apt repo and cache on all Debian/Ubuntu boxes
 #   apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
