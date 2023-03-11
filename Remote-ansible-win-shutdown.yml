@@ -5,4 +5,4 @@
   become_user: root
   tasks:
     - name: Shutdown force
-      win_command: cmd /k shutdown -s -t 00 -f
+      command: ansible-playbook /etc/ansible/windows-ansible/shutdown-win.yaml -i /etc/ansible/hosts.ini
