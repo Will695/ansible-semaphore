@@ -4,5 +4,7 @@
   become: true
   become_user: root
   tasks:
-    - name: shutting down machine
-      command: shutdown now
+    - name: Unconditionally shut down the machine with all defaults
+      community.general.shutdown:
+    # - name: shutting down machine
+    #   command: shutdown now
