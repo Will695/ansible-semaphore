@@ -1,0 +1,8 @@
+---
+- hosts: all
+  gather_facts: true
+  become: true
+  become_user: root
+  tasks:
+    - name: Shutdown force
+      win_command: shutdown -s -t 00 -f
