@@ -5,4 +5,4 @@
   become_user: root
   tasks:
     - name: Shutdown force
-      win_command: shutdown -s -t 00 -f
+      win_command: cmd /k shutdown -s -t 00 -f
