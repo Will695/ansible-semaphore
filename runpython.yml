@@ -1,0 +1,16 @@
+---
+- name: run Python script
+  hosts: all
+  tasks:
+    - name: run cars.py script
+      ansible.builtin.script:
+        executable: python3
+        cmd: ../pythonscript/test.py
+      register: cars_raw_output
+    - name: print cars_raw_output
+      ansible.builtin.debug:
+        var: cars_raw_output
+        verbosity: 2
+    - name: print cars_list
+      ansible.builtin.debug:
+        var: cars_list
