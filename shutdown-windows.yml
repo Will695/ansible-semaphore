@@ -1,0 +1,7 @@
+---
+  - name: Shutdown Windows machine force
+    hosts: all
+    gather_facts: false
+    tasks:
+    - name: Shutdown force
+      win_command: cmd /k shutdown -s -t 00 -f
