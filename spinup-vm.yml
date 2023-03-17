@@ -1,0 +1,8 @@
+---
+- hosts: all
+  gather_facts: false
+  become: true
+  become_user: root
+  tasks:
+    - name: Shutdown force
+      command: ansible-playbook /etc/ansible/proxmox.yaml -i /etc/ansible/proxmoxhosts.ini  -e "@/etc/ansible/proxmoxvars.yml"
