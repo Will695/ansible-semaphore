@@ -6,14 +6,14 @@
     - set_fact:
         yeppers: "Linux-temp-{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=8') }}"
     - community.general.proxmox_kvm:
-        api_user: "{{ api_user}}"
-        api_token_id: "{{ api_token_id }}"
-        api_token_secret: "{{ api_token_secret }}"
-        api_host: "{{ api_host }}"
+        api_user: "{{api_user}}"
+        api_token_id: "{{api_token_id}}"
+        api_token_secret: "{{api_token_secret}}"
+        api_host: "{{api_host}}"
         validate_certs: no
-        clone: "{{ clone }}"
-        name: "{{ yeppers }}"
-        node: "{{ node }}"
+        clone: "{{clone}}"
+        name: "{{yeppers}}"
+        node: "{{node}}"
         full: true
         format: unspecified
         timeout: 500
