@@ -7,7 +7,6 @@
         yeppers: "Linux-temp-{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=8') }}"
     - community.general.proxmox_kvm:
         api_user: "{{ api_user}}"
-        # api_password: 678ProxMox!
         api_token_id: "{{ api_token_id }}"
         api_token_secret: "{{ api_token_secret }}"
         api_host: "{{ api_host }}"
@@ -66,11 +65,6 @@
         register: vmstatus
       when: vmstatus.status == "running"
 
-    # - name: Sleep for 20 seconds and continue with play
-    #   ansible.builtin.wait_for:
-    #     timeout: 20
-    #   delegate_to: localhost
-
     - name: Get mac address
       ansible.builtin.uri:
         url: "https://{{api_host}}:8006/api2/json/nodes/hppve/qemu/{{vmid}}/config"
@@ -83,11 +77,6 @@
     - set_fact: mac="{{ result.json['data']['net0'].replace('virtio=','').split(',')[0] }}"
     - set_fact: mac="{{ mac|lower }}"
 
-    # - name: Sleep for 30 seconds and continue with play
-    #   ansible.builtin.wait_for:
-    #     timeout: 30
-    #   delegate_to: localhost
-
     - name: getarp
       shell: nmap -sT 192.168.0.0/24
       register: nmap
@@ -96,24 +85,17 @@
     - name: getip
       shell: arp -n  | grep "{{ mac|lower | regex_replace('^\\/|\\/$', '') }}" | awk '{ print $1 }'
       register: theip
-    # - name: getip
-    #   shell: arp | grep "{{ mac|lower | regex_replace('^\\/|\\/$', '') }}" | awk '{ print $1 }'
-    #   register: theip
+
     - name: Print return the ip var
       ansible.builtin.debug:
         var: theip
     - set_fact: ipaddress_found="{{ theip.stdout_lines[0] }}"
     - debug:
         msg: "{{ ipaddress_found }}"
-    # - name: Insert ip to cloud hosts
-    #   lineinfile:
-    #     path: /etc/ansible/cloud-servers.ini
-    #     line: "{{ ipaddress_found }}"
 
     - name: Sending Slack Notification
       uri:
-        url: https://hooks.slack.com/services/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
-        # url: https://hooks.slack.com/services/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
+        url: "{{slack_url}}"
         method: POST
         headers:
           Content-type: 'application/json'
