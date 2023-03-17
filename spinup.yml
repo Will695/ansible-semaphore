@@ -4,7 +4,7 @@
   gather_facts: false
   tasks:
     - set_fact:
-        yeppers: "Linux-temp-{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=8') }}"
+        yeppers: "Linuxtemp-{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=8') }}"
     - community.general.proxmox_kvm:
         api_user: "{{api_user}}"
         api_token_id: "{{api_token_id}}"
@@ -93,15 +93,21 @@
     - debug:
         msg: "{{ ipaddress_found }}"
 
-    - name: Sending Slack Notification
-      uri:
-        url: "{{slack_url}}"
-        method: POST
-        headers:
-          Content-type: 'application/json'
-        return_content: yes 
-        validate_certs: no
-        body: 
-          text: "###########\n YOUR SERVER IS READY\n ---------\n Server: {{ yeppers }}\n IP Address: {{ ipaddress_found }}\n Server also added to Cloud hosts file\n ---------"
-        body_format: json
-        status_code: [200, 202]
+    - name: Send notification message via Slack
+      slack:
+        token: "{{slack_token}}"
+        msg: "###########\n YOUR SERVER IS READY\n ---------\n Server: {{ yeppers }}\n IP Address: {{ ipaddress_found }}\n\n ---------"
+      delegate_to: localhost
+
+    # - name: Sending Slack Notification
+    #   uri:
+    #     url: "{{slack_url}}"
+    #     method: POST
+    #     headers:
+    #       Content-type: 'application/json'
+    #     return_content: yes 
+    #     validate_certs: no
+    #     body: 
+    #       text: "###########\n YOUR SERVER IS READY\n ---------\n Server: {{ yeppers }}\n IP Address: {{ ipaddress_found }}\n Server also added to Cloud hosts file\n ---------"
+    #     body_format: json
+    #     status_code: [200, 202]
