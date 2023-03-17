@@ -4,5 +4,5 @@
   become: true
   become_user: root
   tasks:
-    - name: Shutdown force
+    - name: Spin up Linux VM
       command: ansible-playbook /etc/ansible/proxmox.yaml -i /etc/ansible/proxmoxhosts.ini  -e "@/etc/ansible/proxmoxvars.yml"
