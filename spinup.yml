@@ -99,15 +99,3 @@
         msg: "###########\n YOUR SERVER IS READY\n ---------\n Server: {{ yeppers }}\n IP Address: {{ ipaddress_found }}\n\n ---------"
       delegate_to: localhost
 
-    # - name: Sending Slack Notification
-    #   uri:
-    #     url: "{{slack_url}}"
-    #     method: POST
-    #     headers:
-    #       Content-type: 'application/json'
-    #     return_content: yes 
-    #     validate_certs: no
-    #     body: 
-    #       text: "###########\n YOUR SERVER IS READY\n ---------\n Server: {{ yeppers }}\n IP Address: {{ ipaddress_found }}\n Server also added to Cloud hosts file\n ---------"
-    #     body_format: json
-    #     status_code: [200, 202]
