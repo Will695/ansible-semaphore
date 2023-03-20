@@ -1,0 +1,42 @@
+---
+- hosts: all
+  gather_facts: false
+  become: true
+  become_user: root
+  tasks:
+    - name: pkill mjpg_streamer
+      command: sudo pkill mjpg_streamer
+
+    - name: pkill mjpg_streamer
+      command: sudo pkill mjpg_streamer
+
+    - name: grep webcam
+      command: ps -ax|grep webcam
+
+    - name: grep mjpg
+      command: ps -ax|grep mjpg
+
+    - name: curl action=snapshot
+      command: curl -o ~/screenshot.png http://localhost:8080/?action=snapshot
+
+    - name: curl -v http://localhost:8080/
+      command: curl -v http://localhost:8080/
+      
+    - name: pkill mjpg_streamer
+      command: sudo pkill mjpg_streamer
+
+    - name: pkill mjpg_streamer
+      command: sudo pkill mjpg_streamer
+
+    - name: grep webcam
+      command: ps -ax|grep webcam
+
+    - name: grep mjpg
+      command: ps -ax|grep mjpg
+
+    - name: curl action=snapshot
+      command: curl -o ~/screenshot.png http://localhost:8080/?action=snapshot
+
+    - name: curl -v http://localhost:8080/
+      command: curl -v http://localhost:8080/
+

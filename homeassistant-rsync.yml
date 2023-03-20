@@ -1,0 +1,12 @@
+---
+  - name: Shutdown Windows machine force
+    hosts: all
+    gather_facts: false
+    tasks:
+    - name: Synchronize passing in extra rsync options
+      ansible.posix.synchronize:
+        src: /tmp/helloworld
+        dest: /var/www/helloworld
+        rsync_opts:
+          - "--no-motd"
+          - "--exclude=.git"
