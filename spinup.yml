@@ -99,3 +99,44 @@
         msg: "###########\n YOUR SERVER IS READY\n ---------\n Server: {{ yeppers }}\n IP Address: {{ ipaddress_found }}\n\n ---------"
       delegate_to: localhost
 
+    - name: Hassio html5 notification
+      uri: 
+        url: https://homeassistant.willkennedy.info/api/services/notify/hassio_pc_chrome
+        method: POST
+        headers:
+          Authorization: "{{hassio_token}}"
+          Content-type: 'application/json'
+        return_content: yes 
+        validate_certs: no
+        body:
+          title: "YOUR SERVER IS READY\n\n"
+          message: "Server: {{ yeppers }}\n IP Address: {{ ipaddress_found }}\n\n ---------"
+        body_format: json
+        status_code: [200, 202]
+
+    - name: Hassio phone notification
+      uri: 
+        url: https://homeassistant.willkennedy.info/api/services/notify/mobile_app_pixel_6
+        method: POST
+        headers:
+          Authorization: "{{hassio_token}}"
+          Content-type: 'application/json'
+        return_content: yes 
+        validate_certs: no
+        body:
+          title: "YOUR SERVER IS READY\n\n"
+          message: "Server: {{ yeppers }}\n IP Address: {{ ipaddress_found }}\n\n ---------"
+        body_format: json
+        status_code: [200, 202]
+
+
+# Failed to call service homeassistant/restart. The system cannot restart because the configuration is not valid: Integration error: agent_secret - Integration 'agent_secret' not found. Integration error: log_level - Integration 'log_level' not found.
+
+# sudo mount -t cifs -o username=will695,password=678IkebanaHomeassistant! '\\192.168.0.26' /home/will/hassio
+
+# //192.168.0.26/config /home/will/hassio/config cifs uid=1000,credentials=/home/will/.homeassistantsamba,iocharset=utf8,vers=3.0,noperm 0 0
+# //192.168.0.26/addons /home/will/hassio/addons cifs uid=1000,credentials=/home/will/.homeassistantsamba,iocharset=utf8,vers=3.0,noperm 0 0
+# //192.168.0.26/backup /home/will/hassio/backup cifs uid=1000,credentials=/home/will/.homeassistantsamba,iocharset=utf8,vers=3.0,noperm 0 0
+# //192.168.0.26/media /home/will/hassio/media cifs uid=1000,credentials=/home/will/.homeassistantsamba,iocharset=utf8,vers=3.0,noperm 0 0
+# //192.168.0.26/share /home/will/hassio/share cifs uid=1000,credentials=/home/will/.homeassistantsamba,iocharset=utf8,vers=3.0,noperm 0 0
+# //192.168.0.26/ssl /home/will/hassio/ssl cifs uid=1000,credentials=/home/will/.homeassistantsamba,iocharset=utf8,vers=3.0,noperm 0 0
