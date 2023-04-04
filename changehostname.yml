@@ -1,0 +1,35 @@
+---
+- hosts: all
+  gather_facts: false
+  become: yes
+  tasks:
+    - name: "Get current hostname"
+    - name: "Read a file content"
+      shell: |
+        cat /etc/resolv.conf
+      register: current_hostname
+
+    - name: "Print the file content to a console"
+      debug:
+        msg: "{{ current_hostname.stdout }}"
+    - name: "Print the file content to a console"
+      debug:
+        msg: "{{ current_hostname }}"
+
+    # - name: "Replace line in file examples"
+    #   become: yes
+    #   become_user: root
+    #   replace: 
+    #     path: /etc/hostname
+    #     regexp: 'preserve_hostname: false'
+    #     replace: 'preserve_hostname: true'
+    #     backup: yes
+
+    # - name: "Replace line in file examples"
+    #   become: yes
+    #   become_user: root
+    #   replace: 
+    #     path: /etc/cloud/cloud.cfg
+    #     regexp: 'preserve_hostname: false'
+    #     replace: 'preserve_hostname: true'
+    #     backup: yes
