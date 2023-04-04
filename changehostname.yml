@@ -29,3 +29,6 @@
         regexp: '{{ current_hostname.stdout }}'
         replace: '{{ newhostname }}'
         backup: yes
+
+    - name: reboot host
+      reboot:
