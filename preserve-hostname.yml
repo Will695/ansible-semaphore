@@ -9,9 +9,7 @@
       become_user: root
       replace: 
         path: /etc/cloud/cloud.cfg
-        # regexp: '(^preserve_hostname: false\s)(.*)$'
-        # replace: '\1preserve_hostname: true'
-        regexp: '^(.*)preserve_hostname: false(.*)$' 
-        line: 'preserve_hostname: true'
+        regexp: 'preserve_hostname: false'
+        replace: 'preserve_hostname: true'
         backup: yes
         
