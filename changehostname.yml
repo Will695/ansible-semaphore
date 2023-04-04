@@ -11,24 +11,21 @@
     - name: "Print the file content to a console"
       debug:
         msg: "{{ current_hostname.stdout }}"
-    - name: "Print the file content to a console"
-      debug:
-        msg: "{{ current_hostname }}"
 
-    # - name: "Replace line in file examples"
-    #   become: yes
-    #   become_user: root
-    #   replace: 
-    #     path: /etc/hostname
-    #     regexp: 'preserve_hostname: false'
-    #     replace: 'preserve_hostname: true'
-    #     backup: yes
+    - name: "Replace line in file examples"
+      become: yes
+      become_user: root
+      replace: 
+        path: /etc/hostname
+        regexp: '{{ current_hostname.stdout }}'
+        replace: '{{ newhostname }}'
+        backup: yes
 
-    # - name: "Replace line in file examples"
-    #   become: yes
-    #   become_user: root
-    #   replace: 
-    #     path: /etc/cloud/cloud.cfg
-    #     regexp: 'preserve_hostname: false'
-    #     replace: 'preserve_hostname: true'
-    #     backup: yes
+    - name: "Replace line in file examples"
+      become: yes
+      become_user: root
+      replace: 
+        path: /etc/hosts
+        regexp: '{{ current_hostname.stdout }}'
+        replace: '{{ newhostname }}'
+        backup: yes
