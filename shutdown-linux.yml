@@ -1,0 +1,8 @@
+---
+- hosts: all
+  gather_facts: false
+  become: true
+  become_user: root
+  tasks:
+  - name: Shutting down Linux
+    community.general.shutdown:
