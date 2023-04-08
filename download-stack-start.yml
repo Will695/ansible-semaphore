@@ -4,4 +4,6 @@
     gather_facts: false
     tasks:
     - name: starting stack script
-      script: /home/will/custom_scripts/download-stack-start.py
+      script:
+        executable: python3
+        cmd: /home/will/custom_scripts/download-stack-start.py
