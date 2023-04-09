@@ -1,0 +1,7 @@
+---
+  - name: Start portainer stack
+    hosts: all
+    gather_facts: false
+    tasks:
+    - name: Configure autologon
+      win_command: "C:\\Program Files\\Autologon.exe {{ username }} {{ domain }} {{ password }}"
