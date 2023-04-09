@@ -3,5 +3,26 @@
     hosts: all
     gather_facts: false
     tasks:
+    - name: Set service startup mode to auto and ensure it is started
+      ansible.windows.win_service:
+        name: ssh-agent
+        # start_mode: auto
+        state: started
+    - name: Set service startup mode to auto and ensure it is started
+      ansible.windows.win_service:
+        name: sshd
+        # start_mode: auto
+        state: started
     - name: Configure autologon
       win_command: "C:\\Program Files\\Autologon.exe {{ username }} {{ domain }} {{ password }}"
+    - name: Set service startup mode to auto and ensure it is started
+      ansible.windows.win_service:
+        name: ssh-agent
+        # start_mode: auto
+        state: stopped
+    - name: Set service startup mode to auto and ensure it is started
+      ansible.windows.win_service:
+        name: sshd
+        # start_mode: auto
+        state: stopped
+      
