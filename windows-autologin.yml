@@ -1,10 +1,12 @@
 ---
-  - name: 
-    hosts: all
-    gather_facts: false
-    tasks:
+- hosts: all
+  gather_facts: true
+  become: true
+  become_user: root
+  tasks:
   - name: Mount nas
     command: sudo touch /home/will/Films/ha/login/login.txt
+
     # - name: Set service startup mode to auto and ensure it is started
     #   ansible.windows.win_service:
     #     name: ssh-agent
