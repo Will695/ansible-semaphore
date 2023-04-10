@@ -7,3 +7,14 @@
       script:
         executable: python3
         cmd: /home/will/custom_scripts/download-stack-start.py
+    - name: Mount nas
+      command: sudo touch /home/will/Films/ha/login/login.txt
+    - name: Pause for 5 minutes to build app cache
+      ansible.builtin.pause:
+        minutes: 10
+    - name: Mount nas
+      command: sudo rm /home/will/Films/ha/login/login.txt
+    - name: starting stack script
+      script:
+        executable: python3
+        cmd: /home/will/custom_scripts/download-stack-start.py
