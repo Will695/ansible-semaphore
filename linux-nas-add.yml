@@ -9,4 +9,6 @@
       path: /etc/fstab
       line: "{{ nas_share }}  /home/will/Films  nfs      defaults    0       0"
   - name: Mount nas
+    command: sudo mkdir /home/will/Films
+  - name: Mount nas
     command: sudo mount -a
