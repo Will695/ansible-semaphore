@@ -6,7 +6,11 @@
       - debug:
           var: ansible_winrm_server_cert_validation
       - name: Minimize all windows and show desktop
-        win_shell: "(New-Object -ComObject Shell.Application).MinimizeAll()"
+        win_psexec:
+          command: powershell.exe "(New-Object -ComObject Shell.Application).MinimizeAll()"
+          interactive: yes
+          elevated: no
+
       - name: winmsg
         win_msg:
           display_seconds: 60
