@@ -9,9 +9,9 @@
         community.windows.psexec:
           connection_username: "{{ ansible_user }}"
           connection_password: "{{ ansible_password }}"
-          # command: powershell.exe "(New-Object -ComObject Shell.Application).MinimizeAll()"
-          executable: powershell.exe
-          arguments: -command "& {(New-Object -ComObject Shell.Application).MinimizeAll()}"
+          command: powershell -command "& {(New-Object -ComObject Shell.Application).MinimizeAll()}"
+          # executable: powershell.exe
+          # arguments: -command "& {(New-Object -ComObject Shell.Application).MinimizeAll()}"
           interactive: yes
           elevated: no
 
