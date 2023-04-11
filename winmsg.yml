@@ -1,7 +1,7 @@
 ---
   - name: Warn logged in users of impending upgrade
     hosts: all
-    gather_facts: false
+    gather_facts: true
     tasks:
       - debug:
           var: ansible_winrm_server_cert_validation
