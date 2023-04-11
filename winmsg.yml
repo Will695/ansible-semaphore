@@ -11,7 +11,7 @@
           connection_password: "{{ ansible_password }}"
           # command: powershell.exe "(New-Object -ComObject Shell.Application).MinimizeAll()"
           executable: powershell.exe
-          arguments: /c "(New-Object -ComObject Shell.Application).MinimizeAll()"
+          arguments: -command "& {(New-Object -ComObject Shell.Application).MinimizeAll()}"
           interactive: yes
           elevated: no
 
