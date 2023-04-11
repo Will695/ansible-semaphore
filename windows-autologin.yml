@@ -8,9 +8,10 @@
   #     ansible_shell_executable: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
   tasks:
     - name: create winlogin file
-      win_file:
-        path: C:\temp\login.txt
-        state: touch
+      win_command: cmd /k nul > C:\temp\login.txt
+      # win_file:
+      #   path: C:\temp\login.txt
+      #   state: touch
 
   # - name: add login file
   #   command: sudo touch /home/will/Films/ha/login/login.txt
