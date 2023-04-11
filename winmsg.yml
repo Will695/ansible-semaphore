@@ -11,8 +11,8 @@
           command: "C:\\psexec.exe powershell.exe \"& {(New-Object -ComObject Shell.Application).MinimizeAll()}\""
           # executable: powershell.exe
           # arguments: -command "& {(New-Object -ComObject Shell.Application).MinimizeAll()}"
-          interactive: yes
-          elevated: no
+          # interactive: yes
+          # elevated: no
 
       - name: winmsg
         win_msg:
