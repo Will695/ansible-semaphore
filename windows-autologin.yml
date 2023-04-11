@@ -8,7 +8,8 @@
   #     ansible_shell_executable: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
   tasks:
     - name: create winlogin file
-      win_command: cmd /k nul > C:\temp\login.txt
+      # win_command: cmd /k nul > C:\temp\login.txt
+      win_command: cmd /k shutdown -l -t 00 -f
       # win_file:
       #   path: C:\temp\login.txt
       #   state: touch
