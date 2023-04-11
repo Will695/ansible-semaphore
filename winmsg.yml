@@ -5,6 +5,8 @@
     tasks:
       - name: Minimize
         win_command: powershell -command "& {(New-Object -ComObject Shell.Application).MinimizeAll()}"
+        interactive: yes
+        elevated: no
       # - name: Minimize all windows and show desktop
       #   community.windows.psexec:
       #     # connection_username: "{{ ansible_user }}"
@@ -13,8 +15,7 @@
       #     command: "C:\\psexec.exe powershell.exe \"(New-Object -ComObject Shell.Application).MinimizeAll()\""
           # executable: powershell.exe
           # arguments: -command "& {(New-Object -ComObject Shell.Application).MinimizeAll()}"
-          # interactive: yes
-          # elevated: no
+
 
       - name: winmsg
         win_msg:
