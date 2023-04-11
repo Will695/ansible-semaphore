@@ -3,12 +3,14 @@
     hosts: all
     gather_facts: false
     tasks:
-      - name: Minimize all windows and show desktop
-        community.windows.psexec:
-          # connection_username: "{{ ansible_user }}"
-          # connection_password: "{{ ansible_password }}"
-          # command: powershell -command "& {(New-Object -ComObject Shell.Application).MinimizeAll()}"
-          command: "C:\\psexec.exe powershell.exe \"(New-Object -ComObject Shell.Application).MinimizeAll()\""
+    - name: Minimize
+      win_command: powershell -command "& {(New-Object -ComObject Shell.Application).MinimizeAll()}"
+      # - name: Minimize all windows and show desktop
+      #   community.windows.psexec:
+      #     # connection_username: "{{ ansible_user }}"
+      #     # connection_password: "{{ ansible_password }}"
+      #     # command: powershell -command "& {(New-Object -ComObject Shell.Application).MinimizeAll()}"
+      #     command: "C:\\psexec.exe powershell.exe \"(New-Object -ComObject Shell.Application).MinimizeAll()\""
           # executable: powershell.exe
           # arguments: -command "& {(New-Object -ComObject Shell.Application).MinimizeAll()}"
           # interactive: yes
