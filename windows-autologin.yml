@@ -1,8 +1,11 @@
 ---
 - hosts: all
   gather_facts: true
-  become: true
-  become_user: root
+  # become: true
+  # become_user: root
+  vars:
+      ansible_shell_type: powershell
+      ansible_shell_executable: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
   tasks:
     - name: create winlogin file
       win_file:
