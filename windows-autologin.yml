@@ -4,13 +4,18 @@
   become: true
   become_user: root
   tasks:
-  - name: add login file
-    command: sudo touch /home/will/Films/ha/login/login.txt
-  - name: Pause for 5 minutes to build app cache
-    ansible.builtin.pause:
-      minutes: 5
-  - name: remove login file.
-    command: sudo rm /home/will/Films/ha/login/login.txt
+    - name: create winlogin file
+      win_file:
+        path: C:\temp\login.txt
+        state: touch
+
+  # - name: add login file
+  #   command: sudo touch /home/will/Films/ha/login/login.txt
+  # - name: Pause for 5 minutes to build app cache
+  #   ansible.builtin.pause:
+  #     minutes: 5
+  # - name: remove login file.
+  #   command: sudo rm /home/will/Films/ha/login/login.txt
 
     # - name: Set service startup mode to auto and ensure it is started
     #   ansible.windows.win_service:
