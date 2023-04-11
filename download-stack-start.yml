@@ -11,10 +11,11 @@
       command: sudo touch /home/will/Films/ha/login/login.txt
     - name: Pause for 10 minutes
       ansible.builtin.pause:
-        minutes: 10
-    - name: remove login file
-      command: sudo rm /home/will/Films/ha/login/login.txt
+        minutes: 3
+
     - name: starting stack script
       script:
         executable: python3
         cmd: /home/will/custom_scripts/download-stack-start.py
+    - name: remove login file
+      command: sudo rm /home/will/Films/ha/login/login.txt
