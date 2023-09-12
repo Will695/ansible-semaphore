@@ -1,0 +1,56 @@
+- name: Check URL for 200 status and take action if not 200
+  hosts: localhost
+  tasks:
+    - name: Send HTTP GET request
+      uri:
+        url: "https://homeassistant.willkennedy.info/lovelace/0"  # Replace with your desired URL
+        method: GET
+      register: response
+
+    - name: Check HTTP status code
+      assert:
+        that:
+          - response.status == 200
+        fail_msg: "URL returned status code {{ response.status }}"
+        success_msg: "URL returned status code 200"
+      when: response.status != 200  # Run the following tasks only if status is not 200
+
+    - name: Run tasks when status is not 200
+      debug:
+        msg: "Take action here because status is not 200"
+      when: response.status != 200
+
+    - community.general.proxmox_kvm:
+        api_user: "{{api_user}}"
+        api_token_id: "{{api_token_id}}"
+        api_token_secret: "{{api_token_secret}}"
+        api_host: "{{api_host}}"
+        validate_certs: no
+        clone: "{{clone}}"
+        name: "{{yeppers}}"
+        node: "{{node}}"
+        full: true
+        format: unspecified
+        timeout: 500
+        agent: "enabled=1"
+    - name: Sleep for 10 seconds and continue with play
+      ansible.builtin.wait_for:
+        timeout: 10
+      delegate_to: localhost
+
+    - name: Stop the Proxmox VM
+      proxmox_kvm:
+        node: pve  # Replace with the name of your Proxmox node
+        vmid: 100  # Replace with the VM ID of your VM
+        state: stopped
+    
+    - name: Sleep for 10 seconds and continue with play
+      ansible.builtin.wait_for:
+        timeout: 10
+      delegate_to: localhost
+
+    - name: Start the Proxmox VM
+      proxmox_kvm:
+        node: pve
+        vmid: 100
+        state: started
