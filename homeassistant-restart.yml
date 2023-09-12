@@ -38,9 +38,13 @@
     - name: Execute Proxmox VM stop command
       proxmox:
         command: "qm stop 100 --hard"  # Replace 100 with your VM ID
-        node: pve  # Replace with the name of your Proxmox node
+        node: "{{ node }}"
+        api_user: "{{ api_user}}"
+        api_token_id: "{{ api_token_id }}"
+        api_token_secret: "{{ api_token_secret }}"
+        api_host: "{{ api_host }}"
       become: yes
-      
+
     # - name: stop if started
     #   community.general.proxmox_kvm:
     #     api_user: "{{ api_user}}"
