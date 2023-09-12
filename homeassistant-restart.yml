@@ -29,7 +29,6 @@
         api_host: "{{api_host}}"
         validate_certs: no
         clone: "{{clone}}"
-        name: "{{yeppers}}"
         node: "{{node}}"
         full: true
         format: unspecified
