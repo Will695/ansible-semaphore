@@ -36,7 +36,7 @@
       when: response.status != 200
 
     - name: Execute Proxmox VM stop command
-      community.general.proxmox_kvm:
+      proxmox:
         command: "qm stop 100 --hard"  # Replace 100 with your VM ID
         node: "{{ node }}"
         api_user: "{{ api_user}}"
