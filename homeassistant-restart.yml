@@ -36,7 +36,7 @@
       # when: vmstatus.status == "running"
       # when: response.status != 200
 
-    - name: start if stopped
+    - name: stop if started
       community.general.proxmox_kvm:
         api_user: "{{ api_user}}"
         api_token_id: "{{ api_token_id }}"
@@ -53,8 +53,20 @@
         timeout: 30
       delegate_to: localhost
 
-
     - name: vm state running check
+      wait_for:
+        community.general.proxmox_kvm:
+          api_user: "{{ api_user}}"
+          api_token_id: "{{ api_token_id }}"
+          api_token_secret: "{{ api_token_secret }}"
+          api_host: "{{ api_host }}"
+          vmid: 100
+          node: "{{ node }}"
+          state: current
+        register: vmstatus
+
+
+    - name: start if stopped
       wait_for:
         community.general.proxmox_kvm:
           api_user: "{{ api_user}}"
