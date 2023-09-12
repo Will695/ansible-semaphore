@@ -35,29 +35,29 @@
       # when: vmstatus.status == "running"
       when: response.status != 200
 
-    - name: Execute Proxmox VM stop command
-      proxmox:
-        command: "qm stop 100 --hard"  # Replace 100 with your VM ID
-        node: "{{ node }}"
-        api_user: "{{ api_user}}"
-        api_token_id: "{{ api_token_id }}"
-        api_token_secret: "{{ api_token_secret }}"
-        hostname: "{{ api_host }}"
-        api_host: "{{ api_host }}"
-      become: yes
-
-    # - name: stop if started
+    # - name: Execute Proxmox VM stop command
     #   community.general.proxmox_kvm:
+    #     command: "qm stop 100 --hard"  # Replace 100 with your VM ID
+    #     node: "{{ node }}"
     #     api_user: "{{ api_user}}"
     #     api_token_id: "{{ api_token_id }}"
     #     api_token_secret: "{{ api_token_secret }}"
+    #     # hostname: "{{ api_host }}"
     #     api_host: "{{ api_host }}"
-    #     vmid: 100
-    #     node: "{{ node }}"
-    #     state: stopped
-    #     force_stop: yes  # Forcefully stop the VM
-    #   when: response.status != 200
-    #   register: vmstatus
+    #   become: yes
+
+    - name: stop if started
+      community.general.proxmox_kvm:
+        api_user: "{{ api_user}}"
+        api_token_id: "{{ api_token_id }}"
+        api_token_secret: "{{ api_token_secret }}"
+        api_host: "{{ api_host }}"
+        vmid: 100
+        node: "{{ node }}"
+        state: stopped
+        force: true  # Forcefully stop the VM
+      when: response.status != 200
+      register: vmstatus
 
     - name: Sleep for 10 seconds for vm to start
       ansible.builtin.wait_for:
