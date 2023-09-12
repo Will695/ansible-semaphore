@@ -44,7 +44,7 @@
         vmid: 100
         node: "{{ node }}"
         state: stopped
-      when: vmstatus.status == "started"
+      # when: vmstatus.status == "started"
       register: vmstatus
 
     - name: Sleep for 10 seconds for vm to start
@@ -76,7 +76,7 @@
           node: "{{ node }}"
           state: started
         register: vmstatus
-      when: vmstatus.status == "stopped"
+      # when: vmstatus.status == "stopped"
 
 
 
