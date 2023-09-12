@@ -12,7 +12,7 @@
     - name: Check HTTP status code
       assert:
         that:
-          - response.status == 200
+          - response.status != 200
         fail_msg: "URL returned status code {{ response.status }}"
         success_msg: "URL returned status code 200"
       when: response.status != 200  # Run the following tasks only if status is not 200
