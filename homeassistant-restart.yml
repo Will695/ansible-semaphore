@@ -33,7 +33,7 @@
           node: "{{ node }}"
           state: current
         register: vmstatus
-      when: vmstatus.status == "running"
+      # when: vmstatus.status == "running"
       # when: response.status != 200
 
     - name: start if stopped
