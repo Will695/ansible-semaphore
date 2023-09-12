@@ -44,6 +44,7 @@
         api_token_secret: "{{ api_token_secret }}"
         hostname: "{{ api_host }}"
         api_host: "{{ api_host }}"
+        vmid: 100
       become: yes
 
     # - name: stop if started
