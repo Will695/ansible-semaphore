@@ -33,7 +33,7 @@
         state: current
       register: vmstatus
       # when: vmstatus.status == "running"
-      # when: response.status != 200
+      when: response.status != 200
 
     - name: stop if started
       community.general.proxmox_kvm:
@@ -44,7 +44,7 @@
         vmid: 100
         node: "{{ node }}"
         state: stopped
-      # when: vmstatus.status == "started"
+      when: response.status != 200
       register: vmstatus
 
     - name: Sleep for 10 seconds for vm to start
@@ -76,7 +76,7 @@
           node: "{{ node }}"
           state: started
         register: vmstatus
-      # when: vmstatus.status == "stopped"
+      when: response.status != 200
 
 
 
