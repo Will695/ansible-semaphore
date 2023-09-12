@@ -22,42 +22,76 @@
         msg: "Take action here because status is not 200"
       when: response.status != 200
 
-    - community.general.proxmox_kvm:
-        api_user: "{{api_user}}"
-        api_token_id: "{{api_token_id}}"
-        api_token_secret: "{{api_token_secret}}"
-        api_host: "{{api_host}}"
-        validate_certs: no
-        clone: "{{clone}}"
-        node: "{{node}}"
-        full: true
-        format: unspecified
-        timeout: 500
-        agent: "enabled=1"
-      when: response.status != 200
+    - name: vm state running check
+      wait_for:
+        community.general.proxmox_kvm:
+          api_user: "{{ api_user}}"
+          api_token_id: "{{ api_token_id }}"
+          api_token_secret: "{{ api_token_secret }}"
+          api_host: "{{ api_host }}"
+          vmid: 100
+          node: "{{ node }}"
+          state: current
+        register: vmstatus
+      when: vmstatus.status == "running"
+      # when: response.status != 200
 
-    - name: Sleep for 10 seconds and continue with play
-      ansible.builtin.wait_for:
-        timeout: 10
-      delegate_to: localhost
-      when: response.status != 200
-
-    - name: Stop the Proxmox VM
-      proxmox_kvm:
-        node: pve  # Replace with the name of your Proxmox node
-        vmid: 100  # Replace with the VM ID of your VM
+    - name: start if stopped
+      community.general.proxmox_kvm:
+        api_user: "{{ api_user}}"
+        api_token_id: "{{ api_token_id }}"
+        api_token_secret: "{{ api_token_secret }}"
+        api_host: "{{ api_host }}"
+        vmid: 100
+        node: "{{ node }}"
         state: stopped
-      when: response.status != 200
+      when: vmstatus.status == "started"
+      register: vmstatus
 
-    - name: Sleep for 10 seconds and continue with play
+    - name: Sleep for 10 seconds for vm to start
       ansible.builtin.wait_for:
         timeout: 30
       delegate_to: localhost
-      when: response.status != 200
 
-    - name: Start the Proxmox VM
-      proxmox_kvm:
-        node: pve
-        vmid: 100
-        state: started
-      when: response.status != 200
+
+    - name: vm state running check
+      wait_for:
+        community.general.proxmox_kvm:
+          api_user: "{{ api_user}}"
+          api_token_id: "{{ api_token_id }}"
+          api_token_secret: "{{ api_token_secret }}"
+          api_host: "{{ api_host }}"
+          vmid: 100
+          node: "{{ node }}"
+          state: started
+        register: vmstatus
+      when: vmstatus.status == "stopped"
+
+
+
+
+    # - name: Sleep for 10 seconds and continue with play
+    #   ansible.builtin.wait_for:
+    #     timeout: 10
+    #   delegate_to: localhost
+    #   when: response.status != 200
+
+    # - name: Stop the Proxmox VM
+    #   proxmox_kvm:
+    #     node: pve  # Replace with the name of your Proxmox node
+    #     vmid: 100  # Replace with the VM ID of your VM
+    #     state: stopped
+    #   when: response.status != 200
+
+    # - name: Sleep for 10 seconds and continue with play
+    #   ansible.builtin.wait_for:
+    #     timeout: 30
+    #   delegate_to: localhost
+    #   when: response.status != 200
+
+    # - name: Start the Proxmox VM
+    #   proxmox_kvm:
+    #     node: pve
+    #     vmid: 100
+    #     state: started
+    #   when: response.status != 200
