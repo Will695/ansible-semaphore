@@ -35,24 +35,30 @@
         format: unspecified
         timeout: 500
         agent: "enabled=1"
+      when: response.status != 200
+
     - name: Sleep for 10 seconds and continue with play
       ansible.builtin.wait_for:
         timeout: 10
       delegate_to: localhost
+      when: response.status != 200
 
     - name: Stop the Proxmox VM
       proxmox_kvm:
         node: pve  # Replace with the name of your Proxmox node
         vmid: 100  # Replace with the VM ID of your VM
         state: stopped
-    
+      when: response.status != 200
+
     - name: Sleep for 10 seconds and continue with play
       ansible.builtin.wait_for:
         timeout: 30
       delegate_to: localhost
+      when: response.status != 200
 
     - name: Start the Proxmox VM
       proxmox_kvm:
         node: pve
         vmid: 100
         state: started
+      when: response.status != 200
