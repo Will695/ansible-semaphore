@@ -1,5 +1,6 @@
 - name: Check URL for 200 status and take action if not 200
-  hosts: localhost
+  hosts: all
+  gather_facts: false
   tasks:
     - name: Send HTTP GET request
       uri:
