@@ -42,7 +42,7 @@
         api_user: "{{ api_user}}"
         api_token_id: "{{ api_token_id }}"
         api_token_secret: "{{ api_token_secret }}"
-        # hostname: "{{ api_host }}"
+        hostname: "{{ api_host }}"
         api_host: "{{ api_host }}"
       become: yes
 
