@@ -35,17 +35,27 @@
       # when: vmstatus.status == "running"
       when: response.status != 200
 
-    - name: Execute Proxmox VM stop command
-      proxmox:
-        command: "qm stop 100 --hard"  # Replace 100 with your VM ID
-        node: "{{ node }}"
+    # - name: Execute Proxmox VM stop command
+    #   proxmox:
+    #     command: "qm stop 100 --hard"  # Replace 100 with your VM ID
+    #     node: "{{ node }}"
+    #     api_user: "{{ api_user}}"
+    #     api_token_id: "{{ api_token_id }}"
+    #     api_token_secret: "{{ api_token_secret }}"
+    #     hostname: "{{ api_host }}"
+    #     api_host: "{{ api_host }}"
+    #     vmid: 100
+    #   become: yes
+
+    - name: Stop container with force
+      community.general.proxmox:
+        vmid: 100
         api_user: "{{ api_user}}"
         api_token_id: "{{ api_token_id }}"
         api_token_secret: "{{ api_token_secret }}"
-        hostname: "{{ api_host }}"
         api_host: "{{ api_host }}"
-        vmid: 100
-      become: yes
+        force: true
+        state: stopped
 
     # - name: stop if started
     #   community.general.proxmox_kvm:
