@@ -43,6 +43,7 @@
         api_token_id: "{{ api_token_id }}"
         api_token_secret: "{{ api_token_secret }}"
         hostname: "{{ api_host }}"
+        api_host: "{{ api_host }}"
       become: yes
 
     # - name: stop if started
