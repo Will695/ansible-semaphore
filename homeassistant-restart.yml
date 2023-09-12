@@ -44,6 +44,7 @@
         vmid: 100
         node: "{{ node }}"
         state: stopped
+        force_stop: yes  # Forcefully stop the VM
       when: response.status != 200
       register: vmstatus
 
