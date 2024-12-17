@@ -67,7 +67,7 @@
 
     - name: Get mac address
       ansible.builtin.uri:
-        url: "https://{{api_host}}:8006/api2/json/nodes/hppve/qemu/{{vmid}}/config"
+        url: "https://{{api_host}}:8006/api2/json/nodes/{{node}}/qemu/{{vmid}}/config"
         method: GET
         return_content: yes
         validate_certs: no
