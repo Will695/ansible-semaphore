@@ -1,0 +1,130 @@
+---
+- name: Proxmox vm
+  hosts: all
+  gather_facts: false
+  tasks:
+    - set_fact:
+        yeppers: "Linuxtemp-{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=8') }}"
+    - community.general.proxmox_kvm:
+        api_user: "{{api_user}}"
+        api_token_id: "{{api_token_id}}"
+        api_token_secret: "{{api_token_secret}}"
+        api_host: "{{api_host}}"
+        validate_certs: no
+        clone: "{{clone}}"
+        name: "{{yeppers}}"
+        node: "{{node}}"
+        full: true
+        format: unspecified
+        timeout: 500
+        agent: "enabled=1"
+    - name: Sleep for 10 seconds and continue with play
+      ansible.builtin.wait_for:
+        timeout: 10
+      delegate_to: localhost
+
+    - name: vm state stopped
+      community.general.proxmox_kvm:
+        api_user: "{{ api_user}}"
+        api_token_id: "{{ api_token_id }}"
+        api_token_secret: "{{ api_token_secret }}"
+        api_host: "{{ api_host }}"
+        name: "{{ yeppers }}"
+        node: "{{ node }}"
+        state: current
+      register: vmstatus
+    - set_fact: vmid="{{ vmstatus.vmid }}"
+
+    - name: start if stopped
+      community.general.proxmox_kvm:
+        api_user: "{{ api_user}}"
+        api_token_id: "{{ api_token_id }}"
+        api_token_secret: "{{ api_token_secret }}"
+        api_host: "{{ api_host }}"
+        name: "{{ yeppers }}"
+        node: "{{ node }}"
+        state: started
+      when: vmstatus.status == "stopped"
+      register: vmstarted
+
+    - name: Sleep for 10 seconds for vm to start
+      ansible.builtin.wait_for:
+        timeout: 10
+      delegate_to: localhost
+
+    - name: vm state running check
+      wait_for:
+        community.general.proxmox_kvm:
+          api_user: "{{ api_user}}"
+          api_token_id: "{{ api_token_id }}"
+          api_token_secret: "{{ api_token_secret }}"
+          api_host: "{{ api_host }}"
+          name: "{{ yeppers }}"
+          node: "{{ node }}"
+          state: current
+        register: vmstatus
+      when: vmstatus.status == "running"
+
+    - name: Get mac address
+      ansible.builtin.uri:
+        url: "https://{{api_host}}:8006/api2/json/nodes/hppve/qemu/{{vmid}}/config"
+        method: GET
+        return_content: yes
+        validate_certs: no
+        headers:
+          Authorization: "PVEAPIToken={{api_user}}!{{api_token_id}}={{api_token_secret}}"
+      register: result
+    - set_fact: mac="{{ result.json['data']['net0'].replace('virtio=','').split(',')[0] }}"
+    - set_fact: mac="{{ mac|lower }}"
+
+    - name: getarp
+      shell: nmap -sT 192.168.0.0/24
+      register: nmap
+    - debug:
+        var: nmap 
+    - name: getip
+      shell: arp -n  | grep "{{ mac|lower | regex_replace('^\\/|\\/$', '') }}" | awk '{ print $1 }'
+      register: theip
+
+    - name: Print return the ip var
+      ansible.builtin.debug:
+        var: theip
+    - set_fact: ipaddress_found="{{ theip.stdout_lines[0] }}"
+    - debug:
+        msg: "{{ ipaddress_found }}"
+
+    - name: Send notification message via Slack
+      slack:
+        token: "{{slack_token}}"
+        msg: "###########\n YOUR SERVER IS READY\n ---------\n Server: {{ yeppers }}\n IP Address: {{ ipaddress_found }}\n\n ---------"
+      delegate_to: localhost
+
+    - name: Hassio html5 notification
+      uri: 
+        url: https://homeassistant.willkennedy.info/api/services/notify/hassio_pc_chrome
+        method: POST
+        headers:
+          Authorization: "{{hassio_token}}"
+          Content-type: 'application/json'
+        return_content: yes 
+        validate_certs: no
+        body:
+          title: "YOUR SERVER IS READY\n\n"
+          message: "Server: {{ yeppers }}\n IP Address: {{ ipaddress_found }}\n\n ---------"
+        body_format: json
+        status_code: [200, 202]
+
+    - name: Hassio phone notification
+      uri: 
+        url: https://homeassistant.willkennedy.info/api/services/notify/mobile_app_pixel_6
+        method: POST
+        headers:
+          Authorization: "{{hassio_token}}"
+          Content-type: 'application/json'
+        return_content: yes 
+        validate_certs: no
+        body:
+          title: "YOUR SERVER IS READY\n\n"
+          message: "Server: {{ yeppers }}\n IP Address: {{ ipaddress_found }}\n\n ---------"
+        body_format: json
+        status_code: [200, 202]
